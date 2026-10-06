@@ -25,3 +25,11 @@ Thumbs.db
 # Java crash logs
 hs_err_pid*.log
 replay_pid*.log
+
+
+# dados locais e relatorios gerados
+dados/
+relatorios/
+
+# configuracoes locais
+.env
