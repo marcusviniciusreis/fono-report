@@ -26,14 +26,16 @@ public class Atendimento {
             throw new IllegalArgumentException("A situação é obrigatória.");
         }
 
-        if (observacao == null || observacao.isBlank()) {
-            throw new IllegalArgumentException("A observação é obrigatória.");
+        String observacaoTratada = observacao == null ? "" : observacao.trim();
+
+        if (situacao == SituacaoAtendimento.REALIZADO && observacaoTratada.isBlank()) {
+            throw new IllegalArgumentException("Registre a evolução do atendimento na observação.");
         }
 
         this.paciente = paciente;
         this.data = data;
         this.situacao = situacao;
-        this.observacao = observacao;
+        this.observacao = observacaoTratada;
     }
 
     public Paciente getPaciente() {
