@@ -67,10 +67,29 @@ public class MenuConsole {
         System.out.println("Nome do responsavel do paciente: ");
         String nomeResp = scanner.nextLine();
 
+        System.out.print("Possui encaminhamento médico? (s/n): ");
+        String resposta = scanner.nextLine().trim();
+
+        while (!resposta.equalsIgnoreCase("s") && !resposta.equalsIgnoreCase("n")) {
+            System.out.print("Digite s ou n: ");
+            resposta = scanner.nextLine().trim();
+        }
+
+        boolean encaminhamentoMedico = resposta.equalsIgnoreCase("s");
+        String nomeMedico = "";
+        if (encaminhamentoMedico) {
+            System.out.print("Nome do médico (opcional): ");
+            nomeMedico = scanner.nextLine();
+        }
+
+        System.out.print("Observações gerais do paciente (opcional): ");
+        String observacao = scanner.nextLine();
+
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
-            LocalDate nascimento = LocalDate.parse(dataNasc, formatter);
-            repository.salvar(new Paciente(nome, nascimento, nomeResp));
+            LocalDate nascimento = LocalDate.parse(dataNasc.trim(), formatter);
+            Paciente paciente = new Paciente(nome, nascimento, nomeResp, encaminhamentoMedico, nomeMedico, observacao);
+            repository.salvar(paciente);
+            System.out.println("Paciente cadastrado!");
         } catch (DateTimeParseException e) {
             System.out.println("Informe uma data válida no formato dd/MM/aaaa.");
         } catch (IllegalArgumentException e) {
@@ -85,7 +104,7 @@ public class MenuConsole {
         }
         for (Paciente paciente : pacientes) {
             System.out.println("\nNome: " + paciente.getNome());
-            System.out.println("Nascimento: " + paciente.getDataNascimento());
+            System.out.println("Nascimento: " + paciente.getDataNascimentoFormatada());
             System.out.println("Idade: " + paciente.getIdade() + " anos");
             String responsavel = paciente.getNomeResponsavel();
             System.out.println("Responsável: " + (responsavel.isBlank() ? "Não informado" : responsavel));
